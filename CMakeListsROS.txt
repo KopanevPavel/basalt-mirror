@@ -231,7 +231,6 @@ set(ALL_INCLUDE_DIRS ${ALL_INCLUDE_DIRS} "thirdparty/basalt-headers/thirdparty/S
 set(ALL_INCLUDE_DIRS ${ALL_INCLUDE_DIRS} "thirdparty/basalt-headers/thirdparty/cereal/include")
 set(ALL_INCLUDE_DIRS ${ALL_INCLUDE_DIRS} "thirdparty/basalt-headers/include")
 set(ALL_INCLUDE_DIRS ${ALL_INCLUDE_DIRS} "thirdparty/CLI11/include")
-set(ALL_INCLUDE_DIRS ${ALL_INCLUDE_DIRS} "thirdparty/fast/include")
 
 set(EXT_INCLUDE_DIRS ${EXT_INCLUDE_DIRS} ${EIGEN3_INCLUDE_DIR})
 set(EXT_INCLUDE_DIRS ${EXT_INCLUDE_DIRS} ${TBB_INCLUDE_DIR})
