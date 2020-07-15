@@ -216,9 +216,7 @@ include_directories(${OpenCV_INCLUDE_DIR})
 message(STATUS "Found OpenCV headers in: ${OpenCV_INCLUDE_DIR}")
 message(STATUS "Found OpenCV_LIBS: ${OpenCV_LIBS}")
 
-
 add_subdirectory(thirdparty)
-
 
 include_directories(thirdparty/basalt-headers/thirdparty/Sophus)
 include_directories(thirdparty/basalt-headers/thirdparty/cereal/include)
@@ -228,6 +226,28 @@ include_directories(thirdparty/fast/include)
 
 include_directories(include)
 
+set(ALL_INCLUDE_DIRS "include")
+set(ALL_INCLUDE_DIRS ${ALL_INCLUDE_DIRS} "thirdparty/basalt-headers/thirdparty/Sophus")
+set(ALL_INCLUDE_DIRS ${ALL_INCLUDE_DIRS} "thirdparty/basalt-headers/thirdparty/cereal/include")
+set(ALL_INCLUDE_DIRS ${ALL_INCLUDE_DIRS} "thirdparty/basalt-headers/include")
+set(ALL_INCLUDE_DIRS ${ALL_INCLUDE_DIRS} "thirdparty/CLI11/include")
+set(ALL_INCLUDE_DIRS ${ALL_INCLUDE_DIRS} "thirdparty/fast/include")
+
+set(EXT_INCLUDE_DIRS ${EXT_INCLUDE_DIRS} ${EIGEN3_INCLUDE_DIR})
+set(EXT_INCLUDE_DIRS ${EXT_INCLUDE_DIRS} ${TBB_INCLUDE_DIR})
+set(EXT_INCLUDE_DIRS "${EXT_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIR}")
+
+if(realsense2_FOUND)
+   catkin_package(
+      INCLUDE_DIRS ${ALL_INCLUDE_DIRS} ${EIGEN3_INCLUDE_DIR}
+      LIBRARIES basalt basalt_rs_t265)
+else()
+   catkin_package(
+      INCLUDE_DIRS ${ALL_INCLUDE_DIRS} ${EIGEN3_INCLUDE_DIR}
+      LIBRARIES basalt)
+endif()
+
+include_directories(${ALL_INCLUDE_DIRS} ${EXT_INCLUDE_DIRS} ${catkin_INCLUDE_DIRS})
 
 add_library(basalt SHARED
   src/io/dataset_io.cpp
@@ -289,6 +309,11 @@ if(realsense2_FOUND)
 
   add_executable(basalt_rs_t265_vio src/rs_t265_vio.cpp src/device/rs_t265.cpp)
   target_link_libraries(basalt_rs_t265_vio basalt realsense2::realsense2 pangolin)
+endif()
+
+if(realsense2_FOUND)
+  set(ALL_INSTALL_TARGETS ${ALL_INSTALL_TARGETS} basalt_rs_t265)
+  add_dependencies(basalt_rs_t265 ${catkin_EXPORTED_TARGETS})
 endif()
 
 add_dependencies(basalt ${catkin_EXPORTED_TARGETS})
