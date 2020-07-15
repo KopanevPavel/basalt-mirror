@@ -319,20 +319,6 @@ install(PROGRAMS ${SCRIPTS_TO_INSTALL} DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
 file(GLOB CONFIG_FILES "${CMAKE_CURRENT_SOURCE_DIR}/data/*.json")
 install(FILES ${CONFIG_FILES}
   DESTINATION ${CMAKE_INSTALL_PREFIX}/etc/basalt)
-  
-install(
-  DIRECTORY include
-  DESTINATION ${CMAKE_INSTALL_PREFIX}
-)
-
-install(
-  DIRECTORY
-  thirdparty/basalt-headers/thirdparty/eigen/Eigen
-  thirdparty/basalt-headers/thirdparty/Sophus/sophus
-  thirdparty/basalt-headers/thirdparty/cereal/include/cereal
-  thirdparty/basalt-headers/include/basalt
-  DESTINATION ${CMAKE_INSTALL_PREFIX}/include
-)
 
 # Replace install() to do-nothing macro.
 macro(install)
