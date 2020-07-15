@@ -4,6 +4,8 @@ include("thirdparty/basalt-headers/cmake_modules/PreProjectWorkarounds.cmake")
 
 project(basalt)
 
+find_package(catkin REQUIRED)
+
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/" ${CMAKE_MODULE_PATH})
 
 if(NOT EIGEN_ROOT)
@@ -295,7 +297,7 @@ if(realsense2_FOUND)
   target_link_libraries(basalt_rs_t265_vio basalt realsense2::realsense2 pangolin)
 endif()
 
-
+add_dependencies(basalt ${catkin_EXPORTED_TARGETS})
 
 install(TARGETS basalt_calibrate basalt_calibrate_imu basalt_vio_sim basalt_mapper_sim basalt_mapper_sim_naive basalt_mapper basalt_opt_flow basalt_vio basalt_kitti_eval basalt_time_alignment basalt
   EXPORT BasaltTargets
@@ -317,7 +319,20 @@ install(PROGRAMS ${SCRIPTS_TO_INSTALL} DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
 file(GLOB CONFIG_FILES "${CMAKE_CURRENT_SOURCE_DIR}/data/*.json")
 install(FILES ${CONFIG_FILES}
   DESTINATION ${CMAKE_INSTALL_PREFIX}/etc/basalt)
+  
+install(
+  DIRECTORY include
+  DESTINATION ${CMAKE_INSTALL_PREFIX}
+)
 
+install(
+  DIRECTORY
+  thirdparty/basalt-headers/thirdparty/eigen/Eigen
+  thirdparty/basalt-headers/thirdparty/Sophus/sophus
+  thirdparty/basalt-headers/thirdparty/cereal/include/cereal
+  thirdparty/basalt-headers/include/basalt
+  DESTINATION ${CMAKE_INSTALL_PREFIX}/include
+)
 
 # Replace install() to do-nothing macro.
 macro(install)
